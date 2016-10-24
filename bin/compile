@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+set -e
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+arrow() {
+  sed -u 's/^/-----> /'
+}
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+INSTALL_DIR="$BUILD_DIR/vendor/awscli"
+
+AWSCLI_BUNDLE_URL="https://s3.amazonaws.com/aws-cli/awscli-bundle.zip"
+
+echo "Fetching awscli-bundle" | arrow
+curl --silent --output /tmp/awscli-bundle.zip "$AWSCLI_BUNDLE_URL"
+unzip -qq -d "$BUILD_DIR/vendor" /tmp/awscli-bundle.zip
+
+echo "Setting up awscli installer" | arrow
+mkdir -p "$BUILD_DIR/.profile.d"
+cp "./bin/install_awscli.sh" "$BUILD_DIR/.profile.d/"
+chmod +x "$BUILD_DIR/.profile.d/install_awscli.sh"
+
+echo "It will be automatically run on dyno launch." | indent
+echo "Make sure to set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_REGION variables in ENV." | indent
+echo
+
+rm -rf /tmp/awscli*
