@@ -14,14 +14,15 @@ echo "Configuring awscli in ~/.aws" | arrow
 mkdir ~/.aws
 
 cat >> ~/.aws/credentials << EOF
-[default]
+[sy]
 aws_access_key_id = $AWS_ACCESS_KEY_ID
 aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
 EOF
 
 cat >> ~/.aws/config << EOF
-[default]
+[profile sy]
 region = $AWS_REGION
+output = json
 EOF
 
 echo "It will be automatically run on dyno launch." | indent
