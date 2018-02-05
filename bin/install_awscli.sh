@@ -19,6 +19,9 @@ chmod +x "$BUNDLE_DIR/install"
 "$BUNDLE_DIR/install" --install-dir "$INSTALL_DIR" --bin-location "$APP_DIR/bin/aws" | indent
 chmod u+x "$INSTALL_DIR/bin/aws"
 
+echo "Updating PATH"
+export PATH=~/vendor/awscli/bin:$PATH
+
 echo "Configuring awscli in ~/.aws" | arrow
 mkdir ~/.aws
 
